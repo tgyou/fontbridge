@@ -362,11 +362,15 @@ local function CreateWindow()
     frame.pathInput = Edit(addPanel, 574)
     frame.pathInput:SetPoint("TOPLEFT", 250, -69)
     local add = Button(addPanel, L["Add"], 130, function()
-        local ok, message = ns.AddFont(frame.nameInput:GetText(), frame.pathInput:GetText())
+        local name = frame.nameInput:GetText():match("^%s*(.-)%s*$")
+        local ok, message = ns.AddFont(name, frame.pathInput:GetText())
         if ok then
             frame.nameInput:SetText("") frame.pathInput:SetText("")
             frame.nameInput:ClearFocus() frame.pathInput:ClearFocus()
-            ns.Refresh(false)
+            local snapshot = ns.Refresh(false)
+            for _, row in ipairs(snapshot.rows) do
+                if row.name == name then Preview(row) break end
+            end
         end
         Message(message)
     end)
