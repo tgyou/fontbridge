@@ -1,0 +1,30 @@
+# Repository and CurseForge listing
+
+## Repository description
+
+Register user-provided fonts with LibSharedMedia and manage font settings for Blizzard UI areas in WoW Forever.
+
+Suggested topics: `wow`, `world-of-warcraft`, `wow-addon`, `wow-forever`, `libsharedmedia`, `fonts`, `lua`.
+
+## CurseForge summary
+
+Share your own fonts with LibSharedMedia-compatible addons and manage fonts for supported Blizzard UI areas. Includes no font files.
+
+## CurseForge project description
+
+FontBridge makes user-provided fonts available to addons that use LibSharedMedia-3.0. Register `.ttf` or `.otf` files with a display name, then select them from compatible addon font menus, including SUF and Bartender.
+
+FontBridge also provides a compact `/fb` window for font preview and list management, plus per-area font settings for supported Blizzard UI elements. Font size, outline, and shadow controls are shown where the client supports them.
+
+FontManager is not required. FontBridge does not edit FontManager or other addons. Third-party addons keep their own font settings. The archive contains no fonts; users must supply font files they are licensed to use.
+
+### Project metadata
+
+- **Game/version:** World of Warcraft Forever; interface `16001` (client build `1.60.1`, build `70862`).
+- **Author display:** Arthen Mithrill <LIGHTNING SPEED> KR PvP Horde.
+- **License:** Choose after the author selects a license for FontBridge's own source. The bundled LibSharedMedia library has its own LGPL-2.1 license.
+- **Release archive:** Build with `python3 tools/package_release.py`; the archive contains the addon files and no font binaries.
+
+## Screenshots
+
+Add captures of the Fonts and Area Settings tabs here after preparing a clean demo view. Do not publish screenshots containing personal font names, saved selections, character names, chat, or other player information.

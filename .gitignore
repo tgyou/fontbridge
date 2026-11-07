@@ -1,0 +1,11 @@
+Fonts/*
+!Fonts/README.txt
+*.ttf
+*.otf
+*.woff
+*.woff2
+dist/
+.DS_Store
+__MACOSX/
+__pycache__/
+*.py[cod]
