@@ -11,7 +11,15 @@ def build_release():
     if not version:
         raise ValueError("FontBridge.toc must declare a valid Version")
 
-    paths = {toc, root / "README.md", root / "Fonts/README.txt", root / "Libs/LICENSE-LGPL-2.1.txt"}
+    paths = {
+        toc,
+        root / "README.md",
+        root / "LICENSE",
+        root / "THIRD_PARTY_NOTICES.md",
+        root / "LICENSES/Ace3.txt",
+        root / "Fonts/README.txt",
+        root / "Libs/LICENSE-LGPL-2.1.txt",
+    }
     for line in metadata.splitlines():
         line = line.strip()
         if line and not line.startswith("#"):
@@ -19,7 +27,7 @@ def build_release():
 
     for path in paths:
         path.resolve().relative_to(root)
-        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md"}:
+        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md"} and path.name != "LICENSE":
             raise ValueError(f"Unexpected release asset: {path.name}")
         if not path.is_file():
             raise FileNotFoundError(path)

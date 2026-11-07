@@ -52,4 +52,4 @@ This release targets WoW Forever interface `16001` (client build `1.60.1`, build
 
 FontBridge author: **Arthen Mithrill <LIGHTNING SPEED> KR PvP Horde**.
 
-The bundled LibSharedMedia-3.0 library is licensed under LGPL-2.1; its license is included in `Libs/LICENSE-LGPL-2.1.txt`. FontBridge's own source license has not yet been selected.
+FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project icon is in `assets/FontBridge-icon.png` for the CurseForge listing and is not included in the addon ZIP.
