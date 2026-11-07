@@ -3,11 +3,11 @@ local L = ns.L
 local window
 local dropdownCount = 0
 local STATUS = {
-    added = { L["공유됨"], 0.35, 0.9, 0.65 }, existing = { L["공유됨"], 0.35, 0.9, 0.65 },
-    conflicts = { L["이름 충돌"], 1, 0.6, 0.3 }, rejected = { L["등록 거절"], 1, 0.4, 0.4 },
-    invalid = { L["확인 필요"], 1, 0.4, 0.4 },
+    added = { L["Shared"], 0.35, 0.9, 0.65 }, existing = { L["Shared"], 0.35, 0.9, 0.65 },
+    conflicts = { L["Name conflict"], 1, 0.6, 0.3 }, rejected = { L["Rejected"], 1, 0.4, 0.4 },
+    invalid = { L["Needs attention"], 1, 0.4, 0.4 },
 }
-local FIELDS = { { "scale", L["크기"] }, { "outline", L["외곽선"] }, { "shadow", L["그림자"] } }
+local FIELDS = { { "scale", L["Size"] }, { "outline", L["Outline"] }, { "shadow", L["Shadow"] } }
 local COLUMNS = {
     font = { x = 178, width = 260 }, scale = { x = 448, width = 104 },
     outline = { x = 562, width = 130 }, shadow = { x = 702, width = 140 },
@@ -82,17 +82,17 @@ local function OptionLabel(field, value)
     for _, option in ipairs(ns.StyleOptions[field]) do
         if option.value == value then return option.label end
     end
-    return L["기본값"]
+    return L["Default"]
 end
 
 local function UpdateAreas()
-    window.applyMessage:SetText(ns.applyMessage or L["선택한 설정을 저장하고 기본 UI에 적용합니다."])
+    window.applyMessage:SetText(ns.applyMessage or L["Saves the selected settings and applies them to the default UI."])
     for _, row in ipairs(window.areaRows) do
-        row.font:SetText(ns.GetDB().areas[row.area.key] or L["게임 기본값"])
+        row.font:SetText(ns.GetDB().areas[row.area.key] or L["Game default"])
         local style = ns.GetStyle(row.area.key)
         for _, field in ipairs(FIELDS) do
             local key = field[1]
-            row[key]:SetText(row.area.locked and row.area.locked[key] and L["변경 불가"] or OptionLabel(key, style[key]))
+            row[key]:SetText(row.area.locked and row.area.locked[key] and L["Unavailable"] or OptionLabel(key, style[key]))
         end
     end
 end
@@ -135,7 +135,7 @@ local function Select(parent, width, choices, selected, callback)
 end
 
 local function FontChoices()
-    local choices = { { label = L["게임 기본값"] } }
+    local choices = { { label = L["Game default"] } }
     local media = LibStub and LibStub("LibSharedMedia-3.0", true)
     if media then
         for _, name in ipairs(media:List("font")) do choices[#choices + 1] = { label = name, value = name } end
@@ -146,22 +146,22 @@ end
 local function Preview(row)
     window.selected = row.path
     window.previewTitle:SetText(row.name)
-    window.path:SetText(row.path or L["파일 경로 없음"])
+    window.path:SetText(row.path or L["No file path"])
     window.preview:SetText("")
     local ok, result
     if row.path then ok, result = pcall(window.preview.SetFont, window.preview, row.path, 24, "") end
     if ok and result ~= false then
-        window.preview:SetText(L["가나다라마바사\nABC abc\n1234567890"])
-        window.previewState:SetText(L["불러오기 성공\n한글과 영문이 보이는지 확인하세요."])
+        window.preview:SetText(L["The quick brown fox\nABC abc\n1234567890"])
+        window.previewState:SetText(L["Font loaded.\nCheck that the sample text is visible."])
     else
-        window.previewState:SetText(L["불러오기 실패\n파일 경로를 확인하세요. 새 파일은 게임을 완전히 재시작해야 합니다."])
+        window.previewState:SetText(L["Could not load the font.\nCheck the file path. Fully restart the game after adding new files."])
     end
     for _, button in ipairs(window.rows) do button.selected:SetShown(button.data and button.data.path == window.selected) end
 end
 
 function ns.UpdateWindow(snapshot)
     if not window or not window:IsShown() then return end
-    window.summary:SetText(snapshot.error or string.format(L["%d개 설치  ·  %d개 공유  ·  확인 필요 %d개"],
+    window.summary:SetText(snapshot.error or string.format(L["%d installed  ·  %d shared  ·  %d need attention"],
         #snapshot.rows, snapshot.added + snapshot.existing, snapshot.conflicts + snapshot.rejected + snapshot.invalid))
     local selected
     for i, row in ipairs(snapshot.rows) do
@@ -181,7 +181,7 @@ function ns.UpdateWindow(snapshot)
             button.file:SetWidth(365)
             button.status = Label(button, "", "GameFontHighlightSmall")
             button.status:SetPoint("RIGHT", -80, 0)
-            button.remove = Button(button, L["삭제"], 62, function(self)
+            button.remove = Button(button, L["Delete"], 62, function(self)
                 local _, message = ns.RemoveFont(self:GetParent().data.index)
                 ns.Refresh(false)
                 Message(message)
@@ -204,10 +204,10 @@ function ns.UpdateWindow(snapshot)
     window.empty:SetShown(#snapshot.rows == 0)
     if selected or snapshot.rows[1] then Preview(selected or snapshot.rows[1]) else
         window.selected = nil
-        window.previewTitle:SetText(L["선택한 폰트 없음"])
+        window.previewTitle:SetText(L["No font selected"])
         window.path:SetText("")
         window.preview:SetText("")
-        window.previewState:SetText(L["왼쪽 목록에서 폰트를 선택하거나 아래에서 새 폰트를 추가하세요."])
+        window.previewState:SetText(L["Select a font from the list on the left, or add one below."])
     end
     UpdateAreas()
 end
@@ -237,7 +237,7 @@ local function AreaCard(parent, area, y)
         GameTooltip:Show()
     end)
     card:SetScript("OnLeave", function() GameTooltip:Hide() end)
-    local reset = Button(card, L["초기화"], 82, function()
+    local reset = Button(card, L["Reset"], 82, function()
         local _, message = ns.ResetArea(area.key)
         Message(message)
         UpdateAreas()
@@ -290,7 +290,7 @@ local function CreateWindow()
     author:SetPoint("TOPRIGHT", -46, -25)
     author:SetWidth(570)
     author:SetJustifyH("RIGHT")
-    local subtitle = Label(frame, L["폰트 라이브러리와 기본 UI의 글꼴을 한곳에서 관리합니다."], "GameFontDisableSmall")
+    local subtitle = Label(frame, L["Manage your font library and default UI fonts in one place."], "GameFontDisableSmall")
     subtitle:SetPoint("TOPLEFT", 24, -52)
     local close = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", -5, -5)
@@ -309,29 +309,29 @@ local function CreateWindow()
         areaTab:SetEnabled(showFonts)
         UpdateAreas()
     end
-    fontTab = Button(frame, L["폰트 관리"], 136, function() Tab(true) end)
+    fontTab = Button(frame, L["Fonts"], 136, function() Tab(true) end)
     fontTab:SetPoint("TOPLEFT", 24, -79)
     fontTab:Disable()
-    areaTab = Button(frame, L["영역별 설정"], 136, function() Tab(false) end)
+    areaTab = Button(frame, L["Area settings"], 136, function() Tab(false) end)
     areaTab:SetPoint("LEFT", fontTab, "RIGHT", 8, 0)
 
-    local list = Panel(fonts, L["설치된 폰트"])
+    local list = Panel(fonts, L["Installed fonts"])
     list:SetPoint("TOPLEFT")
     list:SetPoint("BOTTOMLEFT", 0, 184)
     list:SetWidth(600)
     frame.summary = Label(list, "", "GameFontHighlightSmall")
     frame.summary:SetPoint("TOPLEFT", 16, -40)
     frame.summary:SetWidth(440)
-    local refresh = Button(list, L["새로고침"], 90, function() ns.Refresh(false) end)
+    local refresh = Button(list, L["Refresh"], 90, function() ns.Refresh(false) end)
     refresh:SetPoint("TOPRIGHT", -12, -11)
     frame.content = Scroll(list, 12, -67, 37, 52, 550)
     frame.rows = {}
-    frame.empty = Label(list, L["설치된 폰트가 없습니다."], "GameFontDisable")
+    frame.empty = Label(list, L["No fonts are installed."], "GameFontDisable")
     frame.empty:SetPoint("TOPLEFT", 23, -86)
-    local removalNote = Label(list, L["목록 삭제는 /reload 후 완전히 반영됩니다."], "GameFontDisableSmall")
+    local removalNote = Label(list, L["List removals take full effect after /reload."], "GameFontDisableSmall")
     removalNote:SetPoint("BOTTOMLEFT", 12, 16)
     removalNote:SetWidth(550)
-    local preview = Panel(fonts, L["미리보기"])
+    local preview = Panel(fonts, L["Preview"])
     preview:SetPoint("TOPLEFT", list, "TOPRIGHT", 14, 0)
     preview:SetPoint("BOTTOMRIGHT", 0, 184)
     frame.previewTitle = Label(preview, "", "GameFontNormalLarge")
@@ -349,19 +349,19 @@ local function CreateWindow()
     frame.previewState:SetPoint("BOTTOMLEFT", 18, 18)
     frame.previewState:SetSize(330, 64)
     frame.previewState:SetWordWrap(true)
-    local addPanel = Panel(fonts, L["새 폰트 추가"])
+    local addPanel = Panel(fonts, L["Add a font"])
     addPanel:SetPoint("BOTTOMLEFT")
     addPanel:SetPoint("BOTTOMRIGHT")
     addPanel:SetHeight(170)
-    local nameLabel = Label(addPanel, L["표시 이름"], "GameFontNormalSmall")
+    local nameLabel = Label(addPanel, L["Display name"], "GameFontNormalSmall")
     nameLabel:SetPoint("TOPLEFT", 20, -47)
-    local pathLabel = Label(addPanel, L["파일명 또는 Interface 경로"], "GameFontNormalSmall")
+    local pathLabel = Label(addPanel, L["Filename or Interface path"], "GameFontNormalSmall")
     pathLabel:SetPoint("TOPLEFT", 248, -47)
     frame.nameInput = Edit(addPanel, 210)
     frame.nameInput:SetPoint("TOPLEFT", 22, -69)
     frame.pathInput = Edit(addPanel, 574)
     frame.pathInput:SetPoint("TOPLEFT", 250, -69)
-    local add = Button(addPanel, L["추가"], 130, function()
+    local add = Button(addPanel, L["Add"], 130, function()
         local ok, message = ns.AddFont(frame.nameInput:GetText(), frame.pathInput:GetText())
         if ok then
             frame.nameInput:SetText("") frame.pathInput:SetText("")
@@ -373,22 +373,22 @@ local function CreateWindow()
     add:SetPoint("TOPRIGHT", -18, -69)
     frame.nameInput:SetScript("OnTabPressed", function() frame.pathInput:SetFocus() end)
     frame.pathInput:SetScript("OnEnterPressed", function() add:Click() end)
-    local hint = Label(addPanel, L["폰트 파일을 FontBridge/Fonts에 넣고 게임을 완전히 재시작한 뒤, 확장자를 포함한 파일명을 입력하세요."], "GameFontDisableSmall")
+    local hint = Label(addPanel, L["Place font files in FontBridge/Fonts and fully restart the game, then enter the filename including its extension."], "GameFontDisableSmall")
     hint:SetPoint("TOPLEFT", 18, -114)
     hint:SetWidth(950)
-    local note = Label(addPanel, L["목록에서 삭제해도 실제 폰트 파일은 지워지지 않습니다. 등록한 폰트는 모든 LSM 지원 애드온에서 선택할 수 있습니다."], "GameFontDisableSmall")
+    local note = Label(addPanel, L["Removing a list entry does not delete its file. Registered fonts are available to all addons that support LSM."], "GameFontDisableSmall")
     note:SetPoint("TOPLEFT", 18, -137)
     note:SetWidth(950)
 
-    local state = Panel(areas, L["영역별 글꼴과 효과"])
+    local state = Panel(areas, L["Area fonts and effects"])
     state:SetPoint("TOPLEFT") state:SetPoint("TOPRIGHT") state:SetHeight(62)
     frame.applyMessage = Label(state, "", "GameFontHighlightSmall")
     frame.applyMessage:SetPoint("TOPLEFT", 16, -30)
     frame.applyMessage:SetSize(956, 28)
     frame.applyMessage:SetWordWrap(true)
-    local areaHeading = Label(areas, L["영역별 설정"], "GameFontNormalSmall")
+    local areaHeading = Label(areas, L["Area settings"], "GameFontNormalSmall")
     areaHeading:SetPoint("TOPLEFT", 12, -75)
-    local fontHeading = Label(areas, L["폰트"], "GameFontNormalSmall")
+    local fontHeading = Label(areas, L["Font"], "GameFontNormalSmall")
     fontHeading:SetPoint("TOPLEFT", COLUMNS.font.x, -75)
     for _, field in ipairs(FIELDS) do
         local heading = Label(areas, field[2], "GameFontNormalSmall")
@@ -398,7 +398,7 @@ local function CreateWindow()
     frame.areaRows = {}
     local groups, ordered = {}, {}
     for _, area in ipairs(ns.Areas) do
-        local section = area.section or L["영역별 설정"]
+        local section = area.section or L["Area settings"]
         if not groups[section] then groups[section] = {} ordered[#ordered + 1] = section end
         groups[section][#groups[section] + 1] = area
     end

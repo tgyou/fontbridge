@@ -35,27 +35,27 @@ end
 local function Duplicate(name, path)
     for _, entry in ipairs(ns.GetDB().fonts) do
         if type(entry) == "table" then
-            if entry.name == name then return L["같은 표시 이름이 이미 있습니다."] end
+            if entry.name == name then return L["A font with this display name already exists."] end
             if type(entry.path) == "string" and PathKey(entry.path) == PathKey(path) then
-                return L["이 파일은 이미 목록에 있습니다."]
+                return L["This file is already in the list."]
             end
         end
     end
     local registered = ns.GetFontPath(name)
     if registered and (type(registered) ~= "string" or PathKey(registered) ~= PathKey(path)) then
-        return L["다른 폰트가 이미 사용하는 이름입니다. 다른 이름을 입력하세요."]
+        return L["Another font already uses this name. Enter a different name."]
     end
 end
 
 function ns.AddFont(name, path)
     name, path = Trim(name), Trim(path):gsub("/", "\\")
-    if name == "" or path == "" then return false, L["표시 이름과 폰트 파일명을 입력하세요."] end
+    if name == "" or path == "" then return false, L["Enter a display name and font filename."] end
     if not path:lower():match("%.ttf$") and not path:lower():match("%.otf$") then
-        return false, L["폰트 파일은 .ttf 또는 .otf 형식이어야 합니다."]
+        return false, L["Font files must use the .ttf or .otf extension."]
     end
-    if path:find("%.%.", 1) then return false, L["상위 폴더 경로는 사용할 수 없습니다."] end
+    if path:find("%.%.", 1) then return false, L["Parent folder paths are not allowed."] end
     if not path:lower():match("^interface\\") then
-        if path:find("[:\\]") then return false, L["전체 경로는 Interface\\ 로 시작해야 합니다."] end
+        if path:find("[:\\]") then return false, L["Full paths must start with Interface\\."] end
         path = FONT_DIR .. path
     end
     local duplicate = Duplicate(name, path)
@@ -64,18 +64,18 @@ function ns.AddFont(name, path)
     local ok, result = pcall(tester.SetFont, tester, path, 12, "")
     local got = ok and tester:GetFont()
     if not ok or result == false or type(got) ~= "string" or PathKey(got) ~= PathKey(path) then
-        return false, L["폰트를 불러오지 못했습니다. 파일명과 경로를 확인하고 새 파일은 게임을 완전히 재시작하세요."]
+        return false, L["Could not load the font. Check the filename and path. Fully restart the game after adding new files."]
     end
     table.insert(ns.GetDB().fonts, { name = name, path = path })
     ns.Refresh(false)
-    return true, L["폰트를 추가했습니다. 모든 LSM 지원 애드온에서 선택할 수 있습니다."]
+    return true, L["Font added. You can select it in any addon that supports LSM."]
 end
 
 
 function ns.RemoveFont(index)
     local db = ns.GetDB()
     if type(index) ~= "number" or index % 1 ~= 0 or index < 1 or index > #db.fonts then
-        return false, L["삭제할 폰트를 선택하세요."]
+        return false, L["Select a font to remove."]
     end
     local entry = table.remove(db.fonts, index)
     if type(entry) == "table" then
@@ -85,16 +85,16 @@ function ns.RemoveFont(index)
     end
     if ns.ApplyAreas then ns.ApplyAreas() end
     ns.Refresh(false)
-    return true, L["목록에서 삭제했습니다. LSM 목록에서 완전히 제거하려면 /reload 하세요."]
+    return true, L["Removed from the list. Use /reload to remove it from the LSM list."]
 end
 
 function ns.Refresh(report)
     local snapshot = { rows = {}, added = 0, existing = 0, conflicts = 0, rejected = 0, invalid = 0 }
     local lsm = Media()
     local fonts = lsm and lsm:HashTable("font") or {}
-    if not lsm then snapshot.error = L["LibSharedMedia를 불러오지 못했습니다."] end
+    if not lsm then snapshot.error = L["Could not load LibSharedMedia."] end
     for index, entry in ipairs(ns.GetDB().fonts) do
-        local row = { index = index, name = L["잘못된 항목"], file = "", status = "invalid" }
+        local row = { index = index, name = L["Invalid entry"], file = "", status = "invalid" }
         if type(entry) == "table" and Trim(entry.name) ~= "" and Trim(entry.path) ~= "" then
             row.name, row.path = entry.name, entry.path
             row.file = entry.path:match("[^\\/]+$") or entry.path
@@ -113,7 +113,7 @@ function ns.Refresh(report)
     ns.snapshot = snapshot
     if ns.UpdateWindow then ns.UpdateWindow(snapshot) end
     if report then
-        ns.Print(snapshot.error or string.format(L["%d개 추가, %d개 등록됨, 이름 충돌 %d개, 거절 %d개, 잘못된 항목 %d개."],
+        ns.Print(snapshot.error or string.format(L["%d added, %d registered, %d name conflicts, %d rejected, %d invalid entries."],
             snapshot.added, snapshot.existing, snapshot.conflicts, snapshot.rejected, snapshot.invalid))
     end
     return snapshot
@@ -122,22 +122,22 @@ end
 function ns.SetArea(key, name)
     local known
     for _, area in ipairs(ns.Areas or {}) do if area.key == key then known = true break end end
-    if not known then return false, L["알 수 없는 적용 영역입니다."] end
+    if not known then return false, L["Unknown display area."] end
     if name == "" then name = nil end
     if name ~= nil and (type(name) ~= "string" or not ns.GetFontPath(name)) then
-        return false, L["등록된 폰트를 선택하세요."]
+        return false, L["Select a registered font."]
     end
     ns.GetDB().areas[key] = name
     if ns.ApplyAreas then ns.ApplyAreas() end
-    return true, ns.applyMessage or L["설정을 저장했습니다."]
+    return true, ns.applyMessage or L["Settings saved."]
 end
 
 ns.StyleOptions = { scale = {}, outline = {
-    { label = L["게임 기본값"], value = "DEFAULT" }, { label = L["없음"], value = "NONE" },
-    { label = L["얇게"], value = "OUTLINE" }, { label = L["두껍게"], value = "THICKOUTLINE" },
+    { label = L["Game default"], value = "DEFAULT" }, { label = L["None"], value = "NONE" },
+    { label = L["Thin"], value = "OUTLINE" }, { label = L["Thick"], value = "THICKOUTLINE" },
 }, shadow = {
-    { label = L["게임 기본값"], value = "DEFAULT" }, { label = L["없음"], value = "NONE" },
-    { label = L["사용"], value = "SHADOW" },
+    { label = L["Game default"], value = "DEFAULT" }, { label = L["None"], value = "NONE" },
+    { label = L["On"], value = "SHADOW" },
 } }
 for _, scale in ipairs({ 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5 }) do
     ns.StyleOptions.scale[#ns.StyleOptions.scale + 1] = { label = string.format("%d%%", scale * 100), value = scale }
@@ -167,23 +167,23 @@ end
 
 function ns.SetAreaStyle(key, field, value)
     local area = Area(key)
-    if not area then return false, L["알 수 없는 적용 영역입니다."] end
-    if not ns.StyleOptions[field] then return false, L["알 수 없는 세부 설정입니다."] end
-    if area.locked and area.locked[field] then return false, L["이 영역은 게임에서 해당 설정을 지원하지 않습니다."] end
-    if not ValidStyle(field, value) then return false, L["지원하는 설정 값을 선택하세요."] end
+    if not area then return false, L["Unknown display area."] end
+    if not ns.StyleOptions[field] then return false, L["Unknown detail setting."] end
+    if area.locked and area.locked[field] then return false, L["The game does not support this setting for this area."] end
+    if not ValidStyle(field, value) then return false, L["Select a supported setting value."] end
     local db = ns.GetDB()
     if type(db.styles[key]) ~= "table" then db.styles[key] = {} end
     db.styles[key][field] = value
     if ns.ApplyAreas then ns.ApplyAreas() end
-    return true, ns.applyMessage or L["설정을 저장했습니다."]
+    return true, ns.applyMessage or L["Settings saved."]
 end
 
 function ns.ResetArea(key)
-    if not Area(key) then return false, L["알 수 없는 적용 영역입니다."] end
+    if not Area(key) then return false, L["Unknown display area."] end
     local db = ns.GetDB()
     db.areas[key], db.styles[key] = nil, nil
     if ns.ApplyAreas then ns.ApplyAreas() end
-    return true, ns.applyMessage or L["영역 설정을 기본값으로 복원했습니다."]
+    return true, ns.applyMessage or L["Area settings restored to defaults."]
 end
 
 local frame = CreateFrame("Frame")
@@ -209,6 +209,6 @@ SlashCmdList.FONTBRIDGE = function(message)
     elseif command == "refresh" then
         ns.Refresh(true)
     else
-        ns.Print(L["/fontbridge 또는 /fb 관리 창, /fb refresh 새로고침"])
+        ns.Print(L["/fontbridge or /fb opens the window; /fb refresh updates the font list."])
     end
 end

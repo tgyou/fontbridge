@@ -2,16 +2,16 @@ local _, ns = ...
 local L = ns.L
 
 ns.Areas = {
-    { key = "ui", section = L["기본 화면"], label = L["일반 UI"], note = L["기본 메뉴·버튼·안내문에 적용합니다."] },
-    { key = "chat", section = L["대화와 정보"], label = L["채팅"], note = L["기본 채팅 창과 말풍선 글꼴입니다."] },
-    { key = "tooltips", section = L["대화와 정보"], label = L["툴팁"], note = L["기본 툴팁의 제목과 본문입니다."] },
-    { key = "quests", section = L["대화와 정보"], label = L["퀘스트"], note = L["퀘스트 본문·제목·목표 추적 글꼴입니다."] },
-    { key = "unitframes", section = L["캐릭터와 전투"], label = L["기본 유닛 프레임"], note = L["플레이어·대상·주시·파티의 기본 프레임입니다. SUF는 SUF에서 설정하세요."] },
-    { key = "names", section = L["캐릭터와 전투"], locked = { scale = true, outline = true, shadow = true }, label = L["캐릭터 이름"], note = L["기본 이름표와 머리 위 이름입니다. 크기·외곽선·그림자는 변경할 수 없습니다. 머리 위 이름은 재접속이 필요할 수 있습니다."] },
-    { key = "combat", section = L["캐릭터와 전투"], locked = { outline = true, shadow = true }, label = L["전투 숫자"], note = L["크기는 전투 문자 배율로 설정합니다. 외곽선·그림자는 지원하지 않으며 글꼴은 재접속이 필요할 수 있습니다."] },
-    { key = "actionbars", section = L["기본 화면"], label = L["행동 단축바"], note = L["기본 단축키 표시와 수량 글꼴입니다."] },
-    { key = "zone", section = L["세계와 알림"], label = L["지역 이름"], note = L["지역 진입 시 표시되는 이름입니다."] },
-    { key = "errors", section = L["세계와 알림"], label = L["오류 메시지"], note = L["화면 중앙의 기본 오류 안내문입니다."] },
+    { key = "ui", section = L["General"], label = L["General UI"], note = L["Applies to default menus, buttons, and messages."] },
+    { key = "chat", section = L["Chat and information"], label = L["Chat"], note = L["Default chat windows and speech bubbles."] },
+    { key = "tooltips", section = L["Chat and information"], label = L["Tooltips"], note = L["Default tooltip titles and body text."] },
+    { key = "quests", section = L["Chat and information"], label = L["Quests"], note = L["Quest text, titles, and the objective tracker."] },
+    { key = "unitframes", section = L["Characters and combat"], label = L["Default unit frames"], note = L["Default player, target, focus, and party frames. Configure SUF fonts in SUF."] },
+    { key = "names", section = L["Characters and combat"], locked = { scale = true, outline = true, shadow = true }, label = L["Character names"], note = L["Default nameplates and overhead names. Size, outline, and shadow cannot be changed. Overhead names may require logging in again."] },
+    { key = "combat", section = L["Characters and combat"], locked = { outline = true, shadow = true }, label = L["Combat text"], note = L["Size uses the combat text scale. Outline and shadow are unsupported. Font changes may require logging in again."] },
+    { key = "actionbars", section = L["General"], label = L["Action bars"], note = L["Default keybinding labels and item counts."] },
+    { key = "zone", section = L["World and alerts"], label = L["Zone text"], note = L["Zone names shown when entering an area."] },
+    { key = "errors", section = L["World and alerts"], label = L["Error messages"], note = L["Default error messages shown in the center of the screen."] },
 }
 
 local cvarName = "worldTextScale"
@@ -27,7 +27,7 @@ if not ReadCombatScale() then
     for _, area in ipairs(ns.Areas) do
         if area.key == "combat" then
             area.locked.scale = true
-            area.note = L["이 클라이언트는 전투 숫자의 크기·외곽선·그림자 설정을 지원하지 않습니다. 글꼴은 재접속이 필요할 수 있습니다."]
+            area.note = L["This client does not support combat text size, outline, or shadow settings. Font changes may require logging in again."]
         end
     end
 end
@@ -157,12 +157,12 @@ end
 function ns.ApplyAreas()
     local loaded = C_AddOns and C_AddOns.IsAddOnLoaded or IsAddOnLoaded
     if loaded and loaded("FontManager") then
-        ns.applyMessage = L["FontManager가 켜져 있어 영역별 적용을 중지했습니다. FM을 비활성화하고 /reload 하세요. 폰트 공유는 유지됩니다."]
+        ns.applyMessage = L["Area changes are paused while FontManager is loaded. Disable FM and use /reload. Font sharing remains active."]
         return false, ns.applyMessage
     end
     if InCombatLockdown and InCombatLockdown() then
         pending = true
-        ns.applyMessage = L["설정을 저장했습니다. 전투가 끝나면 적용합니다."]
+        ns.applyMessage = L["Settings saved. Changes will apply after combat."]
         return false, ns.applyMessage
     end
     pending = false
@@ -222,7 +222,7 @@ function ns.ApplyAreas()
             originalGlobals[name] = nil
         end
     end
-    ns.applyMessage = string.format(L["기본 UI 글꼴 적용 완료. 확인 대상 %d개, 적용 실패 %d개, 찾을 수 없는 폰트 %d개."], applied, failed, missing)
+    ns.applyMessage = string.format(L["Default UI fonts applied. %d objects processed, %d failed, %d fonts not found."], applied, failed, missing)
     return failed == 0 and missing == 0, ns.applyMessage
 end
 
