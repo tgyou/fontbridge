@@ -19,6 +19,9 @@ def build_release():
         root / "LICENSES/Ace3.txt",
         root / "Fonts/README.txt",
         root / "Libs/LICENSE-LGPL-2.1.txt",
+        root / "assets/main.png",
+        root / "assets/preview.png",
+        root / "assets/setting.png",
     }
     for line in metadata.splitlines():
         line = line.strip()
@@ -27,7 +30,7 @@ def build_release():
 
     for path in paths:
         path.resolve().relative_to(root)
-        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md"} and path.name != "LICENSE":
+        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md", ".png"} and path.name != "LICENSE":
             raise ValueError(f"Unexpected release asset: {path.name}")
         if not path.is_file():
             raise FileNotFoundError(path)
