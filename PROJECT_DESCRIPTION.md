@@ -21,7 +21,7 @@ FontManager is not required. FontBridge does not edit FontManager or other addon
 ### Project metadata
 
 - **Game/version:** World of Warcraft Forever; interface `16001` (client build `1.60.1`, build `70862`).
-- **Author display:** Arthen Mithrill <LIGHTNING SPEED> KR PvP Horde.
+- **Author display:** Arthen Menethil <LIGHTNING SPEED> KR PvP Horde.
 - **License:** MIT for FontBridge-authored source. Bundled libraries retain their own terms; see `THIRD_PARTY_NOTICES.md`.
 - **Project icon:** `assets/FontBridge-icon.png` (1254×1254 PNG; meets the 400×400 minimum).
 - **Release archive:** Build with `python3 tools/package_release.py`; the archive contains the addon files and no font binaries.

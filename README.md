@@ -50,6 +50,6 @@ This release targets WoW Forever interface `16001` (client build `1.60.1`, build
 
 ## Credits and license
 
-FontBridge author: **Arthen Mithrill <LIGHTNING SPEED> KR PvP Horde**.
+FontBridge author: **Arthen Menethil <LIGHTNING SPEED> KR PvP Horde**.
 
 FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project icon is in `assets/FontBridge-icon.png` for the CurseForge listing and is not included in the addon ZIP.
