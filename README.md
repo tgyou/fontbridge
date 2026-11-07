@@ -15,6 +15,14 @@ FontBridge does not require FontManager and does not modify FontManager, Shadowe
 - Save font entries and area settings between sessions.
 - Korean and English UI, with additional translations for the main interface.
 
+## Screenshots
+
+![Font list](assets/main.png)
+
+![Font preview](assets/preview.png)
+
+![Area settings](assets/setting.png)
+
 ## Install
 
 1. Extract the `FontBridge` folder into `World of Warcraft/_forever_/Interface/AddOns/`.
@@ -52,4 +60,4 @@ This release targets WoW Forever interface `16001` (client build `1.60.1`, build
 
 FontBridge author: **Arthen Menethil <LIGHTNING SPEED> KR PvP Horde**.
 
-FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project icon is in `assets/FontBridge-icon.png` for the CurseForge listing and is not included in the addon ZIP.
+FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project icon is in `assets/FontBridge-icon.png` for the CurseForge listing. Screenshots are in `assets/`; neither the icon nor the screenshots are included in the addon ZIP.

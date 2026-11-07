@@ -28,4 +28,10 @@ FontManager is not required. FontBridge does not edit FontManager or other addon
 
 ## Screenshots
 
-Add captures of the Fonts and Area Settings tabs here after preparing a clean demo view. Do not publish screenshots containing personal font names, saved selections, character names, chat, or other player information.
+The following captures are ready to upload to the CurseForge project's Images gallery:
+
+- `assets/main.png` — the Fonts tab with an empty list.
+- `assets/preview.png` — the Fonts tab showing the font preview and two registered sample fonts.
+- `assets/setting.png` — the Area Settings tab.
+
+The captures show only the FontBridge window; they do not include the character, chat, or game world. Font binaries are not included in the project archive.
