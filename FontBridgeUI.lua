@@ -138,7 +138,9 @@ local function FontChoices()
     local choices = { { label = L["Game default"] } }
     local media = LibStub and LibStub("LibSharedMedia-3.0", true)
     if media then
-        for _, name in ipairs(media:List("font")) do choices[#choices + 1] = { label = name, value = name } end
+        for _, name in ipairs(media:List("font")) do
+            if not ns.IsFontRemoved(name) then choices[#choices + 1] = { label = name, value = name } end
+        end
     end
     return choices
 end

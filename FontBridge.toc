@@ -2,9 +2,8 @@
 ## Title: FontBridge
 ## Notes: Manage custom fonts, share them via LibSharedMedia, and choose fonts for the Blizzard UI.
 ## Author: Arthen Menethil <LIGHTNING SPEED> KR PvP Horde
-## Version: 2.2.1
+## Version: 2.2.2
 ## SavedVariables: FontBridgeDB
-## OptionalDeps: FontManager, ShadowedUnitFrames, LibSharedMedia-3.0
 
 Libs\LibStub.lua
 Libs\CallbackHandler-1.0.lua

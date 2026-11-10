@@ -2,6 +2,7 @@ local addonName, ns = ...
 local L = ns.L
 local FONT_DIR = [[Interface\AddOns\FontBridge\Fonts\]]
 local initialized, tester
+local removedFonts = {}
 
 local function Trim(value)
     return type(value) == "string" and value:match("^%s*(.-)%s*$") or ""
@@ -30,6 +31,10 @@ end
 function ns.GetFontPath(name)
     local lsm = Media()
     return lsm and lsm:HashTable("font")[name]
+end
+
+function ns.IsFontRemoved(name)
+    return removedFonts[name] == true
 end
 
 local function Duplicate(name, path)
@@ -67,6 +72,7 @@ function ns.AddFont(name, path)
         return false, L["Could not load the font. Check the filename and path. Fully restart the game after adding new files."]
     end
     table.insert(ns.GetDB().fonts, { name = name, path = path })
+    removedFonts[name] = nil
     ns.Refresh(false)
     return true, L["Font added. You can select it in any addon that supports LSM."]
 end
@@ -79,6 +85,7 @@ function ns.RemoveFont(index)
     end
     local entry = table.remove(db.fonts, index)
     if type(entry) == "table" then
+        removedFonts[entry.name] = true
         for key, name in pairs(db.areas) do
             if name == entry.name then db.areas[key] = nil end
         end
@@ -110,6 +117,11 @@ function ns.Refresh(report)
         snapshot[row.status] = snapshot[row.status] + 1
         snapshot.rows[#snapshot.rows + 1] = row
     end
+    table.sort(snapshot.rows, function(left, right)
+        local leftName, rightName = left.name:lower(), right.name:lower()
+        if leftName == rightName then return left.name < right.name end
+        return leftName < rightName
+    end)
     ns.snapshot = snapshot
     if ns.UpdateWindow then ns.UpdateWindow(snapshot) end
     if report then

@@ -1,10 +1,13 @@
 # FontBridge
 
+[![Build and release](https://github.com/tgyou/fontbridge/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/tgyou/fontbridge/actions/workflows/release.yml)
+[![Latest release](https://img.shields.io/github/v/release/tgyou/fontbridge)](https://github.com/tgyou/fontbridge/releases/latest)
+
 **Register user-provided fonts with LibSharedMedia and manage fonts for Blizzard UI areas in WoW Forever.**
 
 FontBridge is a standalone addon for World of Warcraft Forever. It adds your own font files to [LibSharedMedia-3.0](https://www.curseforge.com/wow/addons/libsharedmedia-3-0), so any addon that uses LibSharedMedia can offer them in its font selector. It also provides per-area font and style settings for supported Blizzard UI elements.
 
-FontBridge does not require FontManager and does not modify FontManager, Shadowed Unit Frames, or other addons. Third-party addons keep their own font controls; select a registered font in each addon's settings.
+FontBridge does not modify other addons. Third-party addons keep their own font controls; select a registered font in each addon's settings.
 
 ## Features
 
@@ -31,6 +34,10 @@ FontBridge does not require FontManager and does not modify FontManager, Shadowe
 
 The included release archive contains **no font files**. You must supply fonts that you are licensed to use.
 
+## Build and release
+
+Pull requests and pushes to `main` build a ZIP artifact. To publish a release, push a `v` tag that matches the version in `FontBridge.toc`. For version `2.2.2`, run `git tag v2.2.2` and `git push origin v2.2.2`. GitHub Actions builds the ZIP and attaches it to a GitHub Release.
+
 ## Add your own fonts
 
 1. Copy `.ttf` or `.otf` files into `Interface/AddOns/FontBridge/Fonts/`, or keep them in another addon and use that addon's full `Interface\\AddOns\\...` path.
@@ -41,7 +48,7 @@ Removing an entry from FontBridge does not delete its font file. LibSharedMedia 
 
 ## Choose fonts
 
-Open `/fb` or `/fontbridge` and use **Area Settings** to choose fonts for supported Blizzard UI areas. Each area's help text describes what it controls. FontManager's area-wide font replacement is paused while FontManager is loaded to avoid two addons changing the same Blizzard UI fonts; LibSharedMedia font sharing remains available.
+Open `/fb` or `/fontbridge` and use **Area Settings** to choose fonts for supported Blizzard UI areas. Each area's help text describes what it controls. Area-wide font replacement pauses while another addon is changing the same Blizzard UI fonts; LibSharedMedia font sharing remains available.
 
 For SUF, Bartender, and other third-party addons, open that addon's own settings and select the font registered by FontBridge. FontBridge does not replace third-party addon-specific font settings.
 
