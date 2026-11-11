@@ -22,6 +22,7 @@ def build_release():
         root / "assets/main.png",
         root / "assets/preview.png",
         root / "assets/setting.png",
+        root / "assets/FontBridge-icon.tga",
     }
     for line in metadata.splitlines():
         line = line.strip()
@@ -30,7 +31,7 @@ def build_release():
 
     for path in paths:
         path.resolve().relative_to(root)
-        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md", ".png"} and path.name != "LICENSE":
+        if path.suffix.lower() not in {".lua", ".toc", ".txt", ".md", ".png", ".tga"} and path.name != "LICENSE":
             raise ValueError(f"Unexpected release asset: {path.name}")
         if not path.is_file():
             raise FileNotFoundError(path)

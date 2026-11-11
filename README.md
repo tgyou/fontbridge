@@ -36,7 +36,7 @@ The included release archive contains **no font files**. You must supply fonts t
 
 ## Build and release
 
-Pull requests and pushes to `main` build a ZIP artifact. To publish a release, push a `v` tag that matches the version in `FontBridge.toc`. For version `2.2.2`, run `git tag v2.2.2` and `git push origin v2.2.2`. GitHub Actions builds the ZIP and attaches it to a GitHub Release.
+Pull requests and pushes to `main` build a ZIP artifact. To publish a release, push a `v` tag that matches the version in `FontBridge.toc`. For version `2.2.3`, run `git tag v2.2.3` and `git push origin v2.2.3`. GitHub Actions builds the ZIP and attaches it to a GitHub Release.
 
 ## Add your own fonts
 
@@ -51,6 +51,10 @@ Removing an entry from FontBridge does not delete its font file. LibSharedMedia 
 Open `/fb` or `/fontbridge` and use **Area Settings** to choose fonts for supported Blizzard UI areas. Each area's help text describes what it controls. Area-wide font replacement pauses while another addon is changing the same Blizzard UI fonts; LibSharedMedia font sharing remains available.
 
 For SUF, Bartender, and other third-party addons, open that addon's own settings and select the font registered by FontBridge. FontBridge does not replace third-party addon-specific font settings.
+
+## Minimap button
+
+Left-click the FontBridge minimap icon to open its window. Drag the icon to move it, or right-click it to hide it. Run `/fb minimap` to toggle the icon, or use `/fb minimap show` and `/fb minimap hide` to set its visibility.
 
 ## Troubleshooting
 
@@ -67,4 +71,4 @@ This release targets WoW Forever interface `16001` (client build `1.60.1`, build
 
 FontBridge author: **Arthen Menethil <LIGHTNING SPEED> KR PvP Horde**.
 
-FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The project icon is in `assets/FontBridge-icon.png` for the CurseForge listing and is not included in the addon ZIP. Screenshots are in `assets/` and included in the ZIP so they appear in this README.
+FontBridge-authored source and project documentation are licensed under MIT; see [LICENSE](LICENSE). Bundled libraries retain their own terms, listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The CurseForge listing icon stays in `assets/FontBridge-icon.png`; the resized `assets/FontBridge-icon.tga` texture is included for the minimap button. Screenshots are in `assets/` and included in the ZIP so they appear in this README.

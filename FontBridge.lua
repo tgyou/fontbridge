@@ -25,6 +25,9 @@ function ns.GetDB()
     if type(FontBridgeDB.fonts) ~= "table" then FontBridgeDB.fonts = {} end
     if type(FontBridgeDB.areas) ~= "table" then FontBridgeDB.areas = {} end
     if type(FontBridgeDB.styles) ~= "table" then FontBridgeDB.styles = {} end
+    if type(FontBridgeDB.minimap) ~= "table" then FontBridgeDB.minimap = {} end
+    if type(FontBridgeDB.minimap.hide) ~= "boolean" then FontBridgeDB.minimap.hide = false end
+    if type(FontBridgeDB.minimap.minimapPos) ~= "number" then FontBridgeDB.minimap.minimapPos = 220 end
     return FontBridgeDB
 end
 
@@ -220,7 +223,13 @@ SlashCmdList.FONTBRIDGE = function(message)
         ns.ToggleWindow()
     elseif command == "refresh" then
         ns.Refresh(true)
+    elseif command == "minimap" then
+        ns.ToggleMinimapButton()
+    elseif command == "minimap show" then
+        ns.SetMinimapButtonHidden(false)
+    elseif command == "minimap hide" then
+        ns.SetMinimapButtonHidden(true)
     else
-        ns.Print(L["/fontbridge or /fb opens the window; /fb refresh updates the font list."])
+        ns.Print(L["/fontbridge or /fb opens the window; /fb refresh updates the font list. /fb minimap toggles its button; use /fb minimap show or hide to set it."])
     end
 end
